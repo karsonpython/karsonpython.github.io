@@ -39,6 +39,7 @@
       --track-num: #555555;
       --copy-success: rgba(255, 255, 255, 0.15);
       --section-border: rgba(255, 255, 255, 0.06);
+      --embed-theme: 0;
     }
 
     [data-theme="light"] {
@@ -63,6 +64,7 @@
       --track-num: #bbbbbb;
       --copy-success: rgba(0, 0, 0, 0.08);
       --section-border: rgba(0, 0, 0, 0.06);
+      --embed-theme: 1;
     }
 
     /* Custom cursor */
@@ -104,7 +106,6 @@
       opacity: 0.2;
     }
 
-    /* Hide custom cursor on touch devices */
     @media (pointer: coarse) {
       .cursor-dot, .cursor-ring { display: none; }
       body, a, button { cursor: auto !important; }
@@ -511,6 +512,7 @@
       border-radius: 12px;
       transition: background 0.25s;
       text-align: left;
+      cursor: none;
       animation: trackIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
     }
@@ -538,33 +540,20 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .track-eq {
+    .track-play {
       display: none;
-      align-items: flex-end;
-      gap: 2px;
       min-width: 18px;
-      height: 14px;
       justify-content: center;
+      color: #1db954;
+    }
+
+    .track-play svg {
+      width: 16px;
+      height: 16px;
     }
 
     .track:hover .track-num { display: none; }
-    .track:hover .track-eq { display: flex; }
-
-    .track-eq span {
-      width: 3px;
-      background: var(--text);
-      border-radius: 2px;
-      animation: eq 0.8s ease-in-out infinite alternate;
-    }
-
-    .track-eq span:nth-child(1) { height: 60%; animation-delay: 0s; }
-    .track-eq span:nth-child(2) { height: 100%; animation-delay: 0.2s; }
-    .track-eq span:nth-child(3) { height: 40%; animation-delay: 0.4s; }
-
-    @keyframes eq {
-      0% { height: 20%; }
-      100% { height: 100%; }
-    }
+    .track:hover .track-play { display: flex; }
 
     .track-info {
       flex: 1;
@@ -585,6 +574,59 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    /* Spotify embed preview */
+    .track-embed {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s, margin 0.3s;
+      opacity: 0;
+      margin-top: 0;
+      border-radius: 12px;
+    }
+
+    .track-embed.active {
+      max-height: 100px;
+      opacity: 1;
+      margin-top: 8px;
+    }
+
+    .track-embed iframe {
+      border-radius: 12px;
+      width: 100%;
+      height: 80px;
+      border: none;
+    }
+
+    /* Equalizer bars for playing state */
+    .track-eq {
+      display: none;
+      align-items: flex-end;
+      gap: 2px;
+      min-width: 18px;
+      height: 14px;
+      justify-content: center;
+    }
+
+    .track.playing .track-num { display: none; }
+    .track.playing .track-play { display: none; }
+    .track.playing .track-eq { display: flex; }
+
+    .track-eq span {
+      width: 3px;
+      background: #1db954;
+      border-radius: 2px;
+      animation: eq 0.8s ease-in-out infinite alternate;
+    }
+
+    .track-eq span:nth-child(1) { height: 60%; animation-delay: 0s; }
+    .track-eq span:nth-child(2) { height: 100%; animation-delay: 0.2s; }
+    .track-eq span:nth-child(3) { height: 40%; animation-delay: 0.4s; }
+
+    @keyframes eq {
+      0% { height: 20%; }
+      100% { height: 100%; }
     }
 
     /* Footer */
@@ -696,38 +738,51 @@
       <div class="tracks">
         <div class="section-label"><span>Top Tracks</span></div>
         <ul class="track-list">
-          <li class="track">
+
+          <li class="track" data-spotify="6o86CKQQc85ql8pMHrvJpo">
             <span class="track-num">01</span>
+            <div class="track-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div class="track-eq"><span></span><span></span><span></span></div>
             <div class="track-info">
               <div class="track-name">Queen St</div>
-              <div class="track-artist">Twenty Three</div>
+              <div class="track-artist">twentythree</div>
             </div>
+            <div class="track-embed" id="embed-0"></div>
           </li>
-          <li class="track">
+
+          <li class="track" data-spotify="04KbaGohVJuN2uDIZ2Aw65">
             <span class="track-num">02</span>
+            <div class="track-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div class="track-eq"><span></span><span></span><span></span></div>
             <div class="track-info">
               <div class="track-name">Austin Powers</div>
-              <div class="track-artist">Maxon</div>
+              <div class="track-artist">maxon</div>
             </div>
+            <div class="track-embed" id="embed-1"></div>
           </li>
-          <li class="track">
+
+          <li class="track" data-spotify="0xBFIv6bYgJVKcAJbS4TCK">
             <span class="track-num">03</span>
+            <div class="track-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div class="track-eq"><span></span><span></span><span></span></div>
             <div class="track-info">
               <div class="track-name">Trust Nobody</div>
-              <div class="track-artist">TwentyThree</div>
+              <div class="track-artist">twentythree</div>
             </div>
+            <div class="track-embed" id="embed-2"></div>
           </li>
-          <li class="track">
+
+          <li class="track" data-spotify="6WrvJeCmVTfy4FtdcyT2F4">
             <span class="track-num">04</span>
+            <div class="track-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             <div class="track-eq"><span></span><span></span><span></span></div>
             <div class="track-info">
               <div class="track-name">Chinchilla</div>
-              <div class="track-artist">Fakemink</div>
+              <div class="track-artist">fakemink</div>
             </div>
+            <div class="track-embed" id="embed-3"></div>
           </li>
+
         </ul>
       </div>
 
@@ -783,49 +838,8 @@
       });
     });
 
-    // ── Hover sound (Web Audio API) ──
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    function playHoverSound() {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 0.12);
-    }
-
-    function playClickSound() {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(1400, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.1);
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 0.15);
-    }
-
-    // Attach hover sounds to interactive elements
-    document.querySelectorAll('.link, .theme-toggle, .copy-btn, .track').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        playHoverSound();
-      });
-    });
-
     // ── Copy username ──
     function copyUsername() {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      playClickSound();
       navigator.clipboard.writeText('6zei').then(() => {
         const btn = document.getElementById('copyBtn');
         const text = document.getElementById('copyText');
@@ -841,7 +855,6 @@
     // ── Ripple effect ──
     document.querySelectorAll('.link').forEach(link => {
       link.addEventListener('click', function(e) {
-        playClickSound();
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
         const rect = this.getBoundingClientRect();
@@ -868,6 +881,42 @@
           transition.classList.remove('active');
         }, 1000);
       });
+    });
+
+    // ── Spotify track preview on hover/click ──
+    let activeEmbed = null;
+
+    document.querySelectorAll('.track').forEach((track, index) => {
+      const spotifyId = track.getAttribute('data-spotify');
+      const embedContainer = document.getElementById('embed-' + index);
+      let loaded = false;
+
+      function showEmbed() {
+        // Close any other open embed
+        if (activeEmbed && activeEmbed !== embedContainer) {
+          activeEmbed.innerHTML = '';
+          activeEmbed.classList.remove('active');
+          // Remove playing state from all tracks
+          document.querySelectorAll('.track.playing').forEach(t => t.classList.remove('playing'));
+        }
+
+        if (!embedContainer.classList.contains('active')) {
+          // Load the Spotify embed iframe
+          const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '0' : '1';
+          embedContainer.innerHTML = '<iframe src="https://open.spotify.com/embed/track/' + spotifyId + '?utm_source=generator&theme=' + theme + '" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>';
+          embedContainer.classList.add('active');
+          track.classList.add('playing');
+          activeEmbed = embedContainer;
+        } else {
+          // Toggle off
+          embedContainer.innerHTML = '';
+          embedContainer.classList.remove('active');
+          track.classList.remove('playing');
+          activeEmbed = null;
+        }
+      }
+
+      track.addEventListener('click', showEmbed);
     });
   </script>
 
