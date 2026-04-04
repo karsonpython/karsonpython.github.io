@@ -93,8 +93,8 @@
       }
     }
 
-    /* ── Background Effects ── */
-    .bg-glow {
+    /* ── Animated Background ── */
+    .bg-image {
       position: fixed;
       inset: 0;
       z-index: 0;
@@ -102,39 +102,29 @@
       pointer-events: none;
     }
 
-    .bg-glow::before {
-      content: '';
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle,
-        rgba(255, 255, 255, 0.035) 0%,
-        rgba(255, 255, 255, 0.015) 30%,
-        transparent 70%
-      );
-      animation: glowPulse 8s ease-in-out infinite alternate;
+    .bg-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+      animation: bgZoom 30s ease-in-out infinite alternate;
     }
 
-    .bg-glow::after {
-      content: '';
-      position: absolute;
-      bottom: -10%;
-      left: 30%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle,
-        rgba(88, 101, 242, 0.02) 0%,
-        transparent 70%
-      );
-      animation: glowPulse 10s ease-in-out 2s infinite alternate;
+    @keyframes bgZoom {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.1) translateY(-2%); }
     }
 
-    @keyframes glowPulse {
-      0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-      100% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+    /* Dark overlay on top of bg */
+    .bg-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center,
+        rgba(5, 5, 5, 0.5) 0%,
+        rgba(5, 5, 5, 0.85) 70%,
+        rgba(5, 5, 5, 0.95) 100%
+      );
     }
 
     /* Grain overlay */
@@ -142,7 +132,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      opacity: 0.02;
+      opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
@@ -818,8 +808,10 @@
 </head>
 <body>
 
-  <!-- Background glow -->
-  <div class="bg-glow"></div>
+  <!-- Animated Background -->
+  <div class="bg-image">
+    <img src="bg.gif" alt="" draggable="false">
+  </div>
 
   <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
@@ -841,7 +833,7 @@
       <div class="pfp-wrapper">
         <div class="pfp-ring-glow"></div>
         <div class="pfp-ring"></div>
-        <img class="pfp" src="pfp.png" alt="karsonnc profile picture" draggable="false">
+        <img class="pfp" src="pfp.jpg" alt="karsonnc profile picture" draggable="false">
         <div class="status-dot" title="Online"></div>
       </div>
 
@@ -869,7 +861,7 @@
         </div>
       </div>
 
-      <p class="bio">cybersecurity &bull; pentesting &bull; python &bull; JS</p>
+      <p class="bio">cybersecurity &bull; pentesting</p>
 
       <!-- Copy Discord Username -->
       <button class="copy-btn" id="copyBtn" onclick="copyUsername()" aria-label="Copy Discord username 6zei">
@@ -902,7 +894,7 @@
       <!-- Discord Presence Widget -->
       <div class="discord-presence">
         <div class="discord-avatar">
-          <img src="pfp.png" alt="Discord avatar">
+          <img src="pfp.jpg" alt="Discord avatar">
           <div class="presence-dot"></div>
         </div>
         <div class="discord-info">
